@@ -12,6 +12,7 @@ public class PlayerCharacterScript : MonoBehaviour
     [SerializeField] private Vector3 headCheckSize = new Vector3(2f, 0.1f, 2f);
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform cam;
+    [SerializeField] private GameObject pauseMenu;
     private Rigidbody rb;
     public Transform playerObj;
 
@@ -195,6 +196,12 @@ public class PlayerCharacterScript : MonoBehaviour
             jumpBufferTimer = jumpBufferTime;
         }
     }
+    private void OnPause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
     #endregion
 
     #region Editor Stuff
