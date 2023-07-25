@@ -5,8 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-   public void PlayGame()
+    private void Start()
     {
+        if(DataPersistenceManager.instance.cleanSaveFile)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+    }
+    public void PlayGame()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void NewGame()
+    {
+        DataPersistenceManager.instance.NewGame();
         SceneManager.LoadScene("SampleScene");
     }
 

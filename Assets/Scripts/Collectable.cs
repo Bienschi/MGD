@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public class Collectable : MonoBehaviour, IDataPersistence
 {
-    [SerializeField] private CollectableCounter collectableCounter;
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float hoverSpeed = 1f;
     [SerializeField] private float hoverDistance = 0.5f;
     private Vector3 startPos;
+    public bool collected = false;
 
     private void Start()
     {
@@ -24,8 +24,27 @@ public class Collectable : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            collectableCounter.increaseCollectableCount();
-            Destroy(gameObject);
+            gameObject.GetComponentInParent<CollectableManager>().increaseCollectableCount();
+            collected = true;
+            gameObject.SetActive(false);
         }
+    }
+
+    public void LoadData(GameData data)
+    {
+        data.collectedCollectables.TryGetValue(gameObject.name, out collected);
+        if (collected)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SaveData(GameData data)
+    {
+        if (data.collectedCollectables.ContainsKey(gameObject.name))
+        {
+            data.collectedCollectables.Remove(gameObject.name);
+        }
+        data.collectedCollectables.Add(gameObject.name, collected);
     }
 }
