@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class DataPersistenceManager : MonoBehaviour
 {
     [SerializeField] private string fileName;
-    public bool cleanSaveFile; 
 
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
@@ -31,13 +30,11 @@ public class DataPersistenceManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -46,23 +43,13 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    public void OnSceneUnloaded(Scene scene)
-    {
-        SaveGame();
-    }
-
     public void NewGame()
     {
         gameData = new GameData();
-        cleanSaveFile = true;
     }
     public void LoadGame()
     {
         gameData = dataHandler.Load();
-        if(gameData == null)
-        {
-            NewGame();
-        }
 
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
@@ -77,7 +64,6 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         dataHandler.Save(gameData);
-        cleanSaveFile = false;
     }
 
     private void OnApplicationQuit()
@@ -87,8 +73,13 @@ public class DataPersistenceManager : MonoBehaviour
 
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
-        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
+        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    public bool HasGameData()
+    {
+        return gameData != null;
     }
 }

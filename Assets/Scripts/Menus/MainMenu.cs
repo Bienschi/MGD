@@ -7,23 +7,22 @@ public class MainMenu : MonoBehaviour
 {
     private void Start()
     {
-        if(DataPersistenceManager.instance.cleanSaveFile)
+        if(!DataPersistenceManager.instance.HasGameData())
         {
             transform.GetChild(0).gameObject.SetActive(false);
         }
-        else
-        {
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
+        
     }
     public void PlayGame()
     {
+        DataPersistenceManager.instance.SaveGame();
         SceneManager.LoadScene("SampleScene");
     }
 
     public void NewGame()
     {
         DataPersistenceManager.instance.NewGame();
+        DataPersistenceManager.instance.SaveGame();
         SceneManager.LoadScene("SampleScene");
     }
 
