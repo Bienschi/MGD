@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Collectable : MonoBehaviour, IDataPersistence
 {
@@ -9,6 +10,12 @@ public class Collectable : MonoBehaviour, IDataPersistence
     [SerializeField] private float hoverDistance = 0.5f;
     private Vector3 startPos;
     public bool collected = false;
+    private int currentLevelNumber;
+
+    public void Awake()
+    {
+        currentLevelNumber = SceneManager.GetActiveScene().buildIndex - Constants.numberOfNoneLevelScenes;
+    }
 
     private void Start()
     {
@@ -32,7 +39,7 @@ public class Collectable : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        data.collectedCollectables.TryGetValue(gameObject.name, out collected);
+        data.collectedCollectables[currentLevelNumber].TryGetValue(gameObject.name, out collected);
         if (collected)
         {
             gameObject.SetActive(false);
@@ -41,10 +48,10 @@ public class Collectable : MonoBehaviour, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        if (data.collectedCollectables.ContainsKey(gameObject.name))
+        if (data.collectedCollectables[currentLevelNumber].ContainsKey(gameObject.name))
         {
-            data.collectedCollectables.Remove(gameObject.name);
+            data.collectedCollectables[currentLevelNumber].Remove(gameObject.name);
         }
-        data.collectedCollectables.Add(gameObject.name, collected);
+        data.collectedCollectables[currentLevelNumber].Add(gameObject.name, collected);
     }
 }

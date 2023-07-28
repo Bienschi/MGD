@@ -2,26 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CollectableManager : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private TextMeshProUGUI collectableDisplay;
-    private int currentCollectableCount = 0;
+    private int currentCollectableCount;
+    private int maxCollectableCount;
+    private int currentLevelNumber;
 
-    public void LoadData(GameData data)
+    public void Awake()
     {
-        this.currentCollectableCount = data.currentCollectableCount;
-        collectableDisplay.text = this.currentCollectableCount.ToString();     
+        currentLevelNumber = SceneManager.GetActiveScene().buildIndex - Constants.numberOfNoneLevelScenes;
     }
 
-    public void SaveData(GameData data)
+    public void Start()
     {
-        data.currentCollectableCount = this.currentCollectableCount;
+        maxCollectableCount = GameObject.FindGameObjectsWithTag("Collectable").Length;
+        collectableDisplay.text = this.currentCollectableCount.ToString();
     }
 
     public void increaseCollectableCount()
     {
         currentCollectableCount++;
         collectableDisplay.text = currentCollectableCount.ToString();
+    }
+
+    public void LoadData(GameData data)
+    {
+        currentCollectableCount = data.collectableCounter[currentLevelNumber];
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.collectableCounter[currentLevelNumber] = currentCollectableCount;
     }
 }

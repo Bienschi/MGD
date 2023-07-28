@@ -5,12 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public SerializableDictionary<string, bool> collectedCollectables;
-    public int currentCollectableCount;
+    public int[] collectableCounter;
+    public SerializableDictionary<string, bool>[] collectedCollectables;
 
     public GameData()
     {
-        this.currentCollectableCount = 0;
-        collectedCollectables = new SerializableDictionary<string, bool>();
+        collectableCounter = new int[Constants.numberOfLevels];
+        collectedCollectables = new SerializableDictionary<string, bool>[Constants.numberOfLevels];
+        for (int i = 0; i < Constants.numberOfLevels; i++)
+        {
+            collectedCollectables[i] = new SerializableDictionary<string, bool>();
+        }
     }
 }
