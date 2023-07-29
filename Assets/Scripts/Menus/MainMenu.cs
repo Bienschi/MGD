@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private LevelSelectionMenu levelSelectionMenu;
     private void Start()
     {
         if(!DataPersistenceManager.instance.HasGameData())
@@ -16,15 +15,15 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayGame()
     {
-        levelSelectionMenu.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        DataPersistenceManager.instance.SaveGame();
+        SceneManager.LoadScene("LevelSelectionMenu");
     }
 
     public void NewGame()
     {
         DataPersistenceManager.instance.NewGame();
-        levelSelectionMenu.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        DataPersistenceManager.instance.SaveGame();
+        SceneManager.LoadScene("LevelSelectionMenu");
     }
 
     public void QuitGame()

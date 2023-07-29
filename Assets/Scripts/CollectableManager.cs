@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class CollectableManager : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private TextMeshProUGUI collectableDisplay;
+    [SerializeField] private TextMeshProUGUI maxCollectableDisplay;
     private int currentCollectableCount;
     private int maxCollectableCount;
     private int currentLevelNumber;
@@ -14,12 +15,13 @@ public class CollectableManager : MonoBehaviour, IDataPersistence
     public void Awake()
     {
         currentLevelNumber = SceneManager.GetActiveScene().buildIndex - Constants.numberOfNoneLevelScenes;
+        maxCollectableCount = GameObject.FindGameObjectsWithTag("Collectable").Length;
     }
 
     public void Start()
     {
-        maxCollectableCount = GameObject.FindGameObjectsWithTag("Collectable").Length;
         collectableDisplay.text = this.currentCollectableCount.ToString();
+        maxCollectableDisplay.text = this.maxCollectableCount.ToString();
     }
 
     public void increaseCollectableCount()

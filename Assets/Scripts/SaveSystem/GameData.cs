@@ -7,6 +7,7 @@ public class GameData
 {
     public int[] collectableCounter;
     public SerializableDictionary<string, bool>[] collectedCollectables;
+    public bool[] completedLevels;
 
     public GameData()
     {
@@ -16,5 +17,7 @@ public class GameData
         {
             collectedCollectables[i] = new SerializableDictionary<string, bool>();
         }
+
+        completedLevels = new bool[Constants.numberOfLevels];
     }
 }

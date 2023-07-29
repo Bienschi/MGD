@@ -82,4 +82,14 @@ public class DataPersistenceManager : MonoBehaviour
     {
         return gameData != null;
     }
+
+    public bool[] getCompletedLevels()
+    {
+        return gameData.completedLevels;
+    }
+
+    public int getCollectableCounter(int level)
+    {
+        return gameData.collectableCounter[level];
+    }
 }

@@ -22,7 +22,6 @@ public class PlayerCharacterScript : MonoBehaviour
     [SerializeField] private float maxMovespeed = 13f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
-    private bool active = true;
     private Vector2 moveDirection;
     private Vector2 horizontalSpeed;
     public Vector3 SpawnPoint;
@@ -61,8 +60,6 @@ public class PlayerCharacterScript : MonoBehaviour
 
     void Update()
     {
-        if(!active) return;
-
         GroundedCheck();
         HeadCheck();
         CalcHorizontalSpeed();
@@ -153,17 +150,7 @@ public class PlayerCharacterScript : MonoBehaviour
     #region Death
     public void Death()
     {
-        active = false;
-        StartCoroutine(Respawn());
-    }
-
-    private IEnumerator Respawn()
-    {
-        yield return new WaitForSeconds(1f);
         transform.position = SpawnPoint;
-        yield return new WaitForSeconds(0.5f);
-        active = true;
-
     }
 
     #endregion

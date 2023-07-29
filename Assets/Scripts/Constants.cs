@@ -5,5 +5,5 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     public const int numberOfLevels = 3;
-    public const int numberOfNoneLevelScenes = 1;
+    public const int numberOfNoneLevelScenes = 2;
 }
