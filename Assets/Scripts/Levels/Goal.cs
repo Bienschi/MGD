@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour, IDataPersistence
 {
-    bool reached = false;
+    private bool reached = false;
     private int currentLevelNumber;
 
     public void Awake()
@@ -24,7 +24,15 @@ public class Goal : MonoBehaviour, IDataPersistence
     {
         reached = true;
         DataPersistenceManager.instance.SaveGame();
-        SceneManager.LoadScene("LevelSelectionMenu");
+
+        if(currentLevelNumber == Constants.numberOfLevels-1)
+        {
+            SceneManager.LoadScene("FinalScreen");
+        }
+        else
+        {
+            SceneManager.LoadScene("LevelSelectionMenu");
+        }  
     }
 
     public void LoadData(GameData data)
